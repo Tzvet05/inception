@@ -1,0 +1,17 @@
+1) MariaDB
+Finish init.sql file (create user + admin, give privileges, etc.)
+Add needed environment variables in .env
+
+Is this command really needed ??? Whats this directory ?
+rm -rf /var/lib/apt/lists/*
+
+To test :
+If root privileges given to mariadb client in config file are not sufficient for privileges, add "chown -R mysql:mysql /run/mysqld" to give user & group privileges to the file (to store pid and socket files)
+
+Notes :
+- skip-networking = 0 is the default already
+
+2) WordPress
+
+3) NginX
+- SSL certificate

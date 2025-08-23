@@ -15,8 +15,6 @@ RUN	apk update \
 
 COPY	nginx.conf /etc/nginx/nginx.conf
 
-#VOLUME	[""]
-
 ENTRYPOINT	["nginx"]
 
 EXPOSE	443
