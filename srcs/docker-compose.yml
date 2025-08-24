@@ -1,7 +1,7 @@
 services:
         mariadb:
                 container_name: mariadb
-                build: requirements/mariadb/
+                build: requirements/mariadb
                 environment:
                         MARIADB_USER: ${MARIADB_USER}
                         MARIADB_PASSWORD: ${MARIADB_PASSWORD}
@@ -12,6 +12,18 @@ services:
                 networks:
                         - inception
                 restart: unless-stopped
+        wordpress:
+                container_name: wordpress
+                build: requirements/wordpress
+                volumes:
+                        - wordpress:/var/lib/html
+                expose:
+                        - "9000"
+                networks:
+                        - inception
+                depends_on:
+                        - mariadb
+                restart: unless-stopped
 
 volumes:
         mariadb:
@@ -21,6 +33,13 @@ volumes:
                         device: /home/ttrave/data/mariadb
                         type: none
                         o: bind
+        wordpress:
+                name: wordpress
+                driver: local
+                driver_opts:
+                        device: /home/ttrave/data/wordpress
+                        type: none
+                        o : bind
 
 networks:
         inception:

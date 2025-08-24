@@ -1,20 +1,36 @@
 0) Makefile
+Add echos
+Add start & stop ?
+rm data/ folder
 
 1) MariaDB
 
-Is this command really needed ??? Whats this directory ?
-rm -rf /var/lib/apt/lists/*
-
 To test :
-If root privileges given to mariadb client in config file are not sufficient for privileges, add "chown -R mysql:mysql /run/mysqld" to give user & group privileges to the file (to store pid and socket files)
-
-Notes :
-- skip-networking = 0 is the default already
+If root privileges given to mariadb client in config file are not sufficient for privileges, add "chown -R mysql:mysql /run/mysqld" to give user & group privileges to the directory
 
 2) WordPress
 
-3) NginX
-- SSL certificate
+Todo :
+Dockerfile
+Config file
+Entrypoint script
 
-TODO :
-remove gitignore ?
+Create 2 users (1 admin)
+Add environment section to docker-compose
+
+3) NginX
+
+Todo :
+SSL certificate
+
+
+
+MISC :
+
+To check :
+Is this command needed ?
+rm -rf /var/lib/apt/lists/*
+
+Use a single shared alpine package
+rm gitignore ?
+rm todo
