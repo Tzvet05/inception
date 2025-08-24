@@ -4,7 +4,7 @@ ADD	alpine-minirootfs-3.22.0-x86_64.tar.gz /
 
 # Install MariaDB, gettext-base for envsubst and zsh for convenience
 RUN	apk update && apk upgrade \
-	&& apk add --no-cache mariadb-server mariadb-client zsh gettext-base
+	&& apk add --no-cache mariadb mariadb-client zsh gettext
 
 # Copy config file
 COPY	mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf

@@ -1,28 +1,28 @@
 services:
-	mariadb:
-		container_name: mariadb
-		build: requirements/mariadb/
-		environment:
-			MARIADB_USER: ${MARIADB_USER}
-			MARIADB_PASSWORD: ${MARIADB_PASSWORD}
-		volumes:
-			- mariadb:/var/lib/mysql
-		expose:
-			- "3306"
-		networks:
-			- inception
-		restart: unless-stopped
+        mariadb:
+                container_name: mariadb
+                build: requirements/mariadb/
+                environment:
+                        MARIADB_USER: ${MARIADB_USER}
+                        MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+                volumes:
+                        - mariadb:/var/lib/mysql
+                expose:
+                        - "3306"
+                networks:
+                        - inception
+                restart: unless-stopped
 
 volumes:
-	mariadb:
-		name: mariadb
-		driver: local
-		driver_opts:
-			device: /home/ttrave/data/mariadb
-			type: none
-			o: bind
+        mariadb:
+                name: mariadb
+                driver: local
+                driver_opts:
+                        device: /home/ttrave/data/mariadb
+                        type: none
+                        o: bind
 
 networks:
-	inception:
-		name: inception
-		driver: bridge
+        inception:
+                name: inception
+                driver: bridge

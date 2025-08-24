@@ -1,6 +1,6 @@
+0) Makefile
+
 1) MariaDB
-Finish init.sql file (create user + admin, give privileges, etc.)
-Add needed environment variables in .env
 
 Is this command really needed ??? Whats this directory ?
 rm -rf /var/lib/apt/lists/*
@@ -15,3 +15,6 @@ Notes :
 
 3) NginX
 - SSL certificate
+
+TODO :
+remove gitignore ?
