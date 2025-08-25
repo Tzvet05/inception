@@ -2,7 +2,7 @@
 FROM	scratch
 ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 
-# Install MariaDB, gettext for envsubst and zsh for convenience
+# Install MariaDB, gettext for envsubst and zsh
 RUN	apk update && apk upgrade \
 	&& apk add --no-cache mariadb mariadb-client zsh gettext
 

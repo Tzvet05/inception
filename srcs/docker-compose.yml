@@ -2,27 +2,67 @@ services:
         mariadb:
                 container_name: mariadb
                 build: requirements/mariadb
+                image: mariadb
                 environment:
-                        MARIADB_USER: ${MARIADB_USER}
-                        MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+                        MYSQL_USERNAME: ${MYSQL_USERNAME}
+                        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                        MYSQL_PASSWORD_ROOT: ${MYSQL_PASSWORD_ROOT}
                 volumes:
                         - mariadb:/var/lib/mysql
-                expose:
-                        - "3306"
                 networks:
                         - inception
+                healthcheck:
+                        test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD}"]
+                        interval: 5s
+                        timeout: 5s
+                        retries: 10
                 restart: unless-stopped
         wordpress:
                 container_name: wordpress
                 build: requirements/wordpress
+                image: wordpress
+                environment:
+                        WORDPRESS_DB_HOST: mariadb:3306
+                        WORDPRESS_DB_NAME: wordpress
+                        WORDPRESS_USERNAME: ${WORDPRESS_USERNAME}
+                        WORDPRESS_PASSWORD: ${WORDPRESS_PASSWORD}
+                        WORDPRESS_EMAIL: ${WORDPRESS_EMAIL}
+                        WORDPRESS_USERNAME_OP: ${WORDPRESS_USERNAME_OP}
+                        WORDPRESS_PASSWORD_OP: ${WORDPRESS_PASSWORD_OP}
+                        WORDPRESS_EMAIL_OP: ${WORDPRESS_EMAIL_OP}
+                        MYSQL_USERNAME: ${MYSQL_USERNAME}
+                        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+                        MYSQL_PASSWORD_ROOT: ${MYSQL_PASSWORD_ROOT}
+                        DOMAIN_NAME: ${DOMAIN_NAME}
+                        TITLE: ${TITLE}
                 volumes:
-                        - wordpress:/var/lib/html
-                expose:
-                        - "9000"
+                        - wordpress:/var/www/html
                 networks:
                         - inception
                 depends_on:
-                        - mariadb
+                        mariadb:
+                                condition: service_healthy
+                healthcheck:
+                        test: ["CMD-SHELL", "cgi-fcgi -bind -connect 127.0.0.1:9000"]
+                        interval: 5s
+                        timeout: 5s
+                        retries: 10
+                restart: unless-stopped
+        nginx:
+                container_name: nginx
+                build: requirements/nginx
+                image: nginx
+                ports:
+                        - "443:443"
+                volumes:
+                        - wordpress:/var/www/html
+                networks:
+                        - inception
+                depends_on:
+                        mariadb:
+                                condition: service_healthy
+                        wordpress:
+                                condition: service_healthy
                 restart: unless-stopped
 
 volumes:

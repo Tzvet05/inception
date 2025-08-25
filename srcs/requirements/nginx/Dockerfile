@@ -1,21 +1,27 @@
+# Use the downloaded Alpine file to avoid numerous requests
 FROM	scratch
+ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 
-ADD	alpine-minirootfs-3.22.0-x86_64.tar.gz /
+# Install NginX, OpenSSL and zsh
+RUN	apk update && apk upgrade \
+	&& apk add --no-cache nginx openssl zsh
 
-# add --no-cache & tls 1.2/1.3 | do I need to upgrade/install nginx ?
-RUN	apk update \
-	&& apk upgrade \
-	&& apk add openssl \
-	&& apk add nginx \
-	&& adduser -D -g 'www' www \
-	&& mkdir -p /www \
-	&& chown -R www:www /var/lib/nginx \
-	&& chown -R www:www /www \
-	&& mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+# Create certificate directory
+RUN	mkdir -p /etc/nginx/ssl
 
-COPY	nginx.conf /etc/nginx/nginx.conf
+# Create self-signed certificate
+RUN	openssl req -x509 -nodes -days 365 -newkey rsa:4096 \
+		-out /etc/nginx/ssl/certificate.crt \
+		-keyout /etc/nginx/ssl/certificate.key \
+		-subj "/C=FR/ST=NA/L=Angouleme/O=42/OU=42/CN=ttrave.42.fr/UID=ttrave"
 
-ENTRYPOINT	["nginx"]
+# Create directory for the PID file
+RUN	mkdir -p /var/run/nginx
+
+# Copy config file
+COPY	nginx.cnf /etc/nginx/http.d/nginx.conf
+
+VOLUME	/var/www/html
 
 EXPOSE	443
 

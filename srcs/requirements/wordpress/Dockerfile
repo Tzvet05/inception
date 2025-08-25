@@ -2,21 +2,34 @@
 FROM	scratch
 ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 
-# Install PHP and zsh for convenience
+# Install PHP and zsh
 RUN	apk update && apk upgrade \
-	&& apk add php-fpm php-mysqli zsh
+	&& apk add --no-cache php-fpm php-cli php-pdo_mysql zsh curl fcgi
 
 # Copy config file
-COPY	wordpress.cnf ???
+COPY	wordpress.cnf /etc/php/php-fpm.d/www.conf
+
+# Create www-data user & group
+RUN	adduser -S -G www-data www-data
+
+# Create directory for the socket file
+RUN	mkdir -p /run/php && chown -R www-data:www-data /run/php
 
 # Copy entrypoint script
 COPY	wordpress_entrypoint.sh /
 RUN	chmod +x /wordpress_entrypoint.sh
 
-VOLUME	/var/lib/html
+# Create and work from /var/www/html
+WORKDIR	/var/www/html
+
+# Download WP-CLI
+RUN	curl -o /usr/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+	&& chmod +x /usr/bin/wp
+
+VOLUME	/var/www/html
 
 EXPOSE	9000
 
 ENTRYPOINT	["/wordpress_entrypoint.sh"]
 
-CMD	["php-fpm8.3"]
+CMD	["php-fpm83", "-F"]

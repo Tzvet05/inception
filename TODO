@@ -1,36 +1,12 @@
-0) Makefile
-Add echos
-Add start & stop ?
-rm data/ folder
+MariaDB :
+Choose between removing "chown -R mysql:mysql /run/mysqld" from the Dockerfile or replacing "user = root" by "user = mysql" in the configuration file
+-> Probably better to use "user = mysql"
 
-1) MariaDB
-
-To test :
-If root privileges given to mariadb client in config file are not sufficient for privileges, add "chown -R mysql:mysql /run/mysqld" to give user & group privileges to the directory
-
-2) WordPress
-
-Todo :
-Dockerfile
-Config file
-Entrypoint script
-
-Create 2 users (1 admin)
-Add environment section to docker-compose
-
-3) NginX
-
-Todo :
-SSL certificate
-
-
+WordPress :
+Make sure that the environment variables passed to WordPress through the environment section in the docker-compose file are not needed by the PHP child processes (otherwise set "clear_env = no" or add explicit environment variables injection in www.conf)
+-> PHP child processes most likely don't need them
 
 MISC :
-
-To check :
-Is this command needed ?
-rm -rf /var/lib/apt/lists/*
-
-Use a single shared alpine package
-rm gitignore ?
-rm todo
+Use a single shared Alpine package (in srcs/ or requirements/) (if possible)
+rm .gitignore
+rm TODO
