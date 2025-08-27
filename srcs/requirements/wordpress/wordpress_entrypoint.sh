@@ -17,7 +17,7 @@ if [ ! -f wp-config.php ]; then
 		--admin_password=$WORDPRESS_PASSWORD_OP \
 		--admin_email=$WORDPRESS_EMAIL_OP --allow-root
 	wp user create $WORDPRESS_USERNAME $WORDPRESS_EMAIL --role=author \
-		--user-pass=$WORDPRESS_PASSWORD --allow-root
+		--user_pass=$WORDPRESS_PASSWORD --allow-root
 fi
 
 # Start PHP

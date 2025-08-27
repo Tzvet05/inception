@@ -34,7 +34,7 @@ stop:
 	@ echo "$(COLOR_WHITE)Stopping Docker services.$(COLOR_DEFAULT)"
 	@ docker compose -f $(DOCKER_COMPOSE) stop
 
-prune:
+prune: clean
 	@ echo "$(COLOR_WHITE)Removing unused containers, networks and images.$(COLOR_DEFAULT)"
 	@ docker system prune -af
 

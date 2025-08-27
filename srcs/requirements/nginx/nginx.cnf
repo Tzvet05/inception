@@ -1,4 +1,5 @@
-server {
+server
+{
 	listen		443 ssl;
 	server_name	ttrave.42.fr www.ttrave.42.fr;
 	root		/var/www/html;
@@ -11,13 +12,15 @@ server {
 	ssl_session_timeout	5m;
 	keepalive_timeout	75;
 
-	location / {
+	location /
+	{
 		try_files	$uri $uri/ =404;
 	}
-	location ~ \.php$ {
+	location ~ \.php$
+	{
+		fastcgi_split_path_info	^(.+\.php)(/.+)$;
 		fastcgi_pass		wordpress:9000;
 		fastcgi_index		index.php;
-		fastcgi_split_path_info	^(.+\.php)(/.+)$;
 		include			fastcgi.conf;
 	}
 }

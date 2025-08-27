@@ -4,16 +4,17 @@ ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 
 # Install PHP, curl, fcgi and zsh
 RUN	apk update && apk upgrade \
-	&& apk add --no-cache php84-fpm php84-cli php84-mysqli php84-mbstring php84-phar zsh curl fcgi
-
-# Copy config file
-COPY	wordpress.cnf /etc/php/php-fpm.d/www.conf
+	&& apk add --no-cache php84-fpm php84-cli php84-mysqli php84-mbstring php84-phar zsh curl fcgi \
+	&& cp /usr/bin/php84 /usr/bin/php
 
 # Create www-data user
 RUN	adduser -S -G www-data www-data
 
 # Create directory for the socket file
 RUN	mkdir -p /run/php && chown -R www-data:www-data /run/php
+
+# Copy config file
+COPY	wordpress.cnf /etc/php84/php-fpm.d/www.conf
 
 # Copy entrypoint script
 COPY	wordpress_entrypoint.sh /
