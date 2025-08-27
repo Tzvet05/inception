@@ -5,7 +5,7 @@ ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 # Install PHP, curl, fcgi and zsh
 RUN	apk update && apk upgrade \
 	&& apk add --no-cache php84-fpm php84-cli php84-mysqli php84-mbstring php84-phar zsh curl fcgi \
-	&& cp /usr/bin/php84 /usr/bin/php
+	&& ln -sf /usr/bin/php84 /usr/bin/php
 
 # Create www-data user
 RUN	adduser -S -G www-data www-data

@@ -3,7 +3,7 @@
 SRC_DIR =	srcs/
 VOL_DIR =	$(HOME)/data/
 
-# Docker-compose
+# Files
 
 DOCKER_COMPOSE =	$(SRC_DIR)docker-compose.yml
 
@@ -15,6 +15,8 @@ COLOR_BLUE =	\033[1;38;5;4m
 COLOR_WHITE =	\033[1;38;5m
 
 # Rules
+
+all: up
 
 up:
 	@ echo "$(COLOR_GREEN)Setting up Docker services.$(COLOR_DEFAULT)"
@@ -34,16 +36,14 @@ stop:
 	@ echo "$(COLOR_WHITE)Stopping Docker services.$(COLOR_DEFAULT)"
 	@ docker compose -f $(DOCKER_COMPOSE) stop
 
-prune: clean
+prune:
 	@ echo "$(COLOR_WHITE)Removing unused containers, networks and images.$(COLOR_DEFAULT)"
 	@ docker system prune -af
 
-clean:
+fclean: down prune
 	@ echo "$(COLOR_WHITE)Removing volume directories.$(COLOR_DEFAULT)"
-	@ sudo rm -rf $(HOME)/data
+	@ sudo rm -rf $(VOL_DIR)
 
-re: down prune up
+re: fclean up
 
-all: up
-
-.PHONY: all up down start stop prune clean re
+.PHONY: all up down start stop prune fclean re
