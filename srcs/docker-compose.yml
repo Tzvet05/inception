@@ -13,9 +13,9 @@ services:
                         - inception
                 healthcheck:
                         test: ["CMD-SHELL", "mysqladmin ping -h mariadb -u${MYSQL_USERNAME} -p${MYSQL_PASSWORD}"]
-                        interval: 5s
-                        timeout: 5s
-                        retries: 10
+                        interval: 3s
+                        timeout: 3s
+                        retries: 20
                 restart: unless-stopped
         wordpress:
                 container_name: wordpress
@@ -44,9 +44,9 @@ services:
                                 condition: service_healthy
                 healthcheck:
                         test: ["CMD-SHELL", "cgi-fcgi -bind -connect 127.0.0.1:9000"]
-                        interval: 5s
-                        timeout: 5s
-                        retries: 10
+                        interval: 3s
+                        timeout: 3s
+                        retries: 20
                 restart: unless-stopped
         nginx:
                 container_name: nginx

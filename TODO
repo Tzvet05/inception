@@ -7,6 +7,6 @@ Make sure that the environment variables passed to WordPress through the environ
 -> PHP child processes most likely don't need them
 
 MISC :
-Use a single shared Alpine package (in srcs/ or requirements/) (if possible)
+Remove ports sections from wordpress & mariadb services
 rm .gitignore
 rm TODO

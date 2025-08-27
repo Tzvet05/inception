@@ -6,6 +6,9 @@ ADD	alpine-minirootfs-3.21.4-x86_64.tar.gz /
 RUN	apk update && apk upgrade \
 	&& apk add --no-cache nginx openssl zsh
 
+RUN	ln -sf /dev/stdout /var/log/nginx/access.log \
+	&& ln -sf /dev/stderr /var/log/nginx/error.log
+
 # Create certificate directory
 RUN	mkdir -p /etc/nginx/ssl
 
@@ -23,6 +26,4 @@ COPY	nginx.cnf /etc/nginx/http.d/nginx.conf
 
 VOLUME	/var/www/html
 
-EXPOSE	443
-
-CMD	["nginx", "-g", "daemon off"]
+CMD	["nginx", "-g", "daemon off;"]
